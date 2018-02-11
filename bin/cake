@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+const po = require('commander');
+const chalk = require('chalk');
+const image = require('../module/image');
+const joke = require('../module/joke');
+const news = require('../module/news');
+
+po.version(require('../package').version)
+	.usage('<command> [options]')
+
+po.command('news')
+	.description('看今天的头条新闻')
+	.action(env => {
+		news.consoleNews();
+	});
+
+po.command('joke')
+	.description('来条笑话')
+	.action(env => {
+		joke.consoleJoke();
+	});
+
+po.command('image')
+	.description('搜张图片看看')
+	.option("-n, --name [image-name]", "Which name to use")
+	.action(function (options) {
+		image.consoleImageString(options.name);
+	});
+
+po.command('test [arguments]', 'ddddd');
+
+po.command('*')
+	.action((env) => {
+		console.log(chalk.red.bold('不存在命令 "%s"', env));
+	})
+po.parse(process.argv)
